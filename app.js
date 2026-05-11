@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 app.use(express.json());
+const unusedVariable = 'error intencional';
 
 // Entidad de dominio: Tareas (Todos)
 let todos = [
