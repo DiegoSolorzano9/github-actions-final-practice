@@ -12,7 +12,7 @@ app.get('/todos', (req, res) => {
   res.status(200).json(todos);
 });
 
-// CREATE: Agregar uno
+// CREATE: Agregar uno.
 app.post('/todos', (req, res) => {
   const newTodo = {
     id: todos.length + 1,
