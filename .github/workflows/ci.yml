@@ -1,0 +1,40 @@
+name: CI Workflow Completo
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    # Uso de Matriz para probar en varias versiones (Requisito 3.4)
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+
+    steps:
+      # 1. Checkout del código
+      - name: Checkout del codigo
+        uses: actions/checkout@v4
+
+      # 2. Setup del entorno de ejecución
+      - name: Configurar Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm' # Optimiza la instalación
+
+      # 3. Instalación de dependencias
+      - name: Instalar dependencias
+        run: npm ci --legacy-peer-deps
+
+      # 4. Linting (Análisis estático)
+      - name: Ejecutar Linting
+        run: npm run lint
+
+      # 5. Ejecución de pruebas y Generación de reporte de cobertura
+      - name: Ejecutar pruebas con cobertura
+        run: npx jest --coverage
